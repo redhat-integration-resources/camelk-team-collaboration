@@ -117,7 +117,7 @@ oc apply -f kafka/answers.yaml
 
 You can watch how the demo is executed in this video clip:
 
-<iframe width="1076" height="605" src="https://www.youtube.com/embed/c8LpWE62LTE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ - https://youtu.be/c8LpWE62LTE
 
 The demo is composed of 5 Camel K elements
 
