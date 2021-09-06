@@ -115,10 +115,14 @@ oc apply -f kafka/answers.yaml
 
 > **Note**: The demo is implemented with simplistic logic. The demo is configured (hacked) to prevent duplicates using a long polling frequency value against the Google Sheets document. You're invited to complete the demo's logic to allow frequent polls and applying data caches and filters to make the demo more realistic. 
 
+You can watch how the demo is executed in this video clip:
+
+<iframe width="1076" height="605" src="https://www.youtube.com/embed/c8LpWE62LTE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 The demo is composed of 5 Camel K elements
 
- - 2 KameletBindings (Stage 1 & 3)
- - 3 Camel K elements (Stage 2, 4 & 5) 
+ - 2 KameletBindings (Stages 1 & 3)
+ - 3 Camel K sources (Stages 2, 4 & 5) 
 
 You can decide to have them all running at the same time, or deploying one at a time to allow your audience to better follow and understand the demo. 
 
@@ -128,17 +132,17 @@ You can decide to have them all running at the same time, or deploying one at a 
 
 2. Deploy Stage 2 with:
 
-        kamel run camelk/stage-2-kafka2mail -d camel-jackson
+        kamel run camelk/stage-2-kafka2mail.xml -d camel-jackson
 
 2. Deploy Stage 3 with:
 
         oc apply -f kameletbinding/stage-3-mail2kafka.yaml
 
-2. Deploy Stage 2 with:
+2. Deploy Stage 4 with:
 
-        kamel run camelk/stage-4-kafka2sheets -d camel-jackson
+        kamel run camelk/stage-4-kafka2sheets.xml -d camel-jackson
 
 
-2. Deploy Stage 2 with:
+2. Deploy Stage 5 with:
 
-        kamel run --name stage5 camelk/java/HelperStage5.java camelk/stage-5-report2drive -d camel-jackson -d camel-pdf
+        kamel run --name stage5 camelk/java/HelperStage5.java camelk/stage-5-report2drive.xml -d camel-jackson -d camel-pdf
