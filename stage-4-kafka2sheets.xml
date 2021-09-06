@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- camel-k: language=xml -->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://camel.apache.org/schema/spring"
+        xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	  <!-- Kafka consumer to collect all the answers -->
+    <route id="consumer">
+        <from uri="kafka:answers?brokers=my-cluster-kafka-bootstrap:9092&amp;autoOffsetReset=earliest"/>
+        <log message="${body}"/>
+
+        <unmarshal>
+            <json/>
+        </unmarshal>
+
+        <setProperty name="row">
+        	<simple>${body.get(subject).split(':')[2]}</simple>
+        </setProperty>
+
+	      <setBody>
+        	<simple>${body.get(message)}</simple>
+        </setBody>
+
+        <log message="row=${exchangeProperty.row}"/>
+        <log message="message=${body}"/>
+
+	      <setBody>
+        	<simple>${body.replaceAll(' > .*', '').trim()}</simple>
+        </setBody>
+
+        <log message="after=${body}"/>
+
+        <to uri="direct:send-to-sheets"/>
+    </route>
+
+
+
+    <route>
+    	<from uri="direct:send-to-sheets"/>
+
+      <setBody>
+      	<simple>{"range":"E${exchangeProperty.row}:E${exchangeProperty.row}","majorDimension": "ROWS","values":[["${body}"]]}</simple>
+      </setBody>
+
+      <log message="google request:\n${body}"/>
+
+      <removeHeaders pattern="*"/>
+      <setHeader name="Content-Type">
+        <constant>application/json</constant>
+      </setHeader>
+      <setHeader name="Authorization">
+        <constant>Bearer YOUR_ACCESS_TOKEN_GOES_HERE</constant>
+      </setHeader>
+      <setHeader name="CamelHttpMethod">
+        <constant>PUT</constant>
+      </setHeader>
+      <log id="route-log" message=">>> ${body}"/>
+      <toD uri="https://sheets.googleapis.com/v4/spreadsheets/YOUR_SHEETS_DOC_ID_GOES_HERE/values/E${exchangeProperty.row}:E${exchangeProperty.row}?valueInputOption=USER_ENTERED"/>
+      <log message="response: ${body}"/>
+    </route>
+
+
+</routes>

@@ -1,0 +1,26 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: stage-3-mail2kafka
+  namespace: demo-camelk
+spec:
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: mail-imap-insecure-source
+    properties:
+      host:     "standalone.demo-mail.svc"
+      port:     "3143"
+      username: "strategy"
+      password: "demo"
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: mail-to-json-action
+  sink:
+    ref:
+      apiVersion: kafka.strimzi.io/v1beta1
+      kind: KafkaTopic
+      name: answers

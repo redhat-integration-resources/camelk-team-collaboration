@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- camel-k: language=xml -->
+<!-- 
+    Run with:
+    kamel run stage-2-kafka2mail.xml -d camel-jackson (dev mode)
+ -->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://camel.apache.org/schema/spring"
+        xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- Kafka consumer to collect all the questions -->
+    <route id="consumer">
+        <from uri="kafka:questions?brokers=my-cluster-kafka-bootstrap:9092&amp;autoOffsetReset=earliest"/>
+        <log message="${body}"/>
+
+        <unmarshal>
+        	<json/>
+        </unmarshal>
+
+        <log message="1st arg: ${body[0]}"/>
+       	<log message="2nd arg: ${body[1]}"/>
+       	<log message="3rd arg: ${body[2]}"/>
+
+        <choice>
+        	<when>
+        		<simple>${body[2]} == 'Development'</simple>
+        		<setProperty name="mail-to">
+        			<simple>development@demo.camelk</simple>
+        		</setProperty>
+        		<to uri="direct:send-mail"/>
+        	</when>
+        	<when>
+        		<simple>${body[2]} == 'Architecture'</simple>
+        		<setProperty name="mail-to">
+        			<simple>architecture@demo.camelk</simple>
+        		</setProperty>
+        		<to uri="direct:send-mail"/>
+        	</when>
+        	<when>
+        		<simple>${body[2]} == 'Operations'</simple>
+        		<setProperty name="mail-to">
+        			<simple>operations@demo.camelk</simple>
+        		</setProperty>
+        		<to uri="direct:send-mail"/>
+        	</when>
+        	<otherwise>
+        		<log message="Message discarded: team is unknown."/>
+        	</otherwise>
+        </choice>
+    </route>
+
+    <!-- Camel route to send email -->
+    <route id="send-mail">
+    	<from uri="direct:send-mail"/>
+    	<log message="sending to: ${exchangeProperty.mail-to}"/>
+
+    	<removeHeaders pattern="*"/>
+
+    	<setProperty name="subject">
+    		<simple>Question ID:${body[0]}</simple>
+    	</setProperty>
+    	<setBody>
+    		<simple>${body[1]}</simple>
+    	</setBody>
+
+    	<toD uri="smtp://standalone.demo-mail.svc:3025?subject=${exchangeProperty.subject}&amp;to=${exchangeProperty.mail-to}&amp;password=demo&amp;username=demo&amp;from=strategy@demo.camelk"/>
+    </route>
+
+</routes>

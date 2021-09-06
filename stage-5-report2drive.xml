@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- camel-k: language=xml -->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://camel.apache.org/schema/spring"
+        xsi:schemaLocation="
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+<!-- 
+Run with:
+kamel run stage-5-report2drive.xml java/HelperStage5.java -d camel-jackson -d camel-pdf  (DEV mode) (double hyphen name) stage-5 
+ -->
+
+    <route>
+        <from uri="kafka:questions?brokers=my-cluster-kafka-bootstrap:9092&amp;autoOffsetReset=earliest"/>
+
+        <log message="question comes in: ${body}"/>
+
+        <unmarshal>
+          <json  library="Jackson"/>
+        </unmarshal>
+
+        <setHeader name="correlation">
+          <simple>${body[0]}</simple>
+        </setHeader>
+
+        <setBody>
+          <simple>${body[1]}</simple>
+        </setBody>
+
+        <to uri="direct:process-stream-events"/>
+    </route>
+
+
+    <route>
+        <from uri="kafka:answers?brokers=my-cluster-kafka-bootstrap:9092&amp;autoOffsetReset=earliest"/>
+
+        <unmarshal>
+            <json library="Jackson"/>
+        </unmarshal>
+
+        <setHeader name="correlation">
+          <simple>${body.get(subject).split(':')[2]}</simple>
+        </setHeader>
+
+        <setProperty name="team">
+          <simple>${body.get(from).split(' ')[0]}</simple>
+        </setProperty>
+
+        <setBody>
+          <simple>${body.get(message)}</simple>
+        </setBody>
+
+        <log message="row=${header.correlation}"/>
+
+        <setBody>
+          <simple>${body.replaceAll(' > .*', '').trim()}</simple>
+        </setBody>
+
+        <to uri="direct:process-stream-events"/>
+    </route>
+
+
+    <route>
+      <from uri="direct:process-stream-events"/>
+      <log message="aggregating Kafka event"/>
+      <aggregate strategyRef="qaStrategy" completionSize="2">
+          <correlationExpression>
+              <header>correlation</header>
+          </correlationExpression>
+          <to uri="direct:aggregate-qas"/>
+      </aggregate>
+    </route>
+
+
+
+    <route>
+      <from uri="direct:aggregate-qas"/>
+      <log message="aggregating Doc event"/>
+      <setHeader name="correlation">
+        <simple>value</simple>
+      </setHeader>
+      <aggregate strategyRef="docStrategy" completionSize="3">
+        <correlationExpression>
+            <header>correlation</header>
+        </correlationExpression>
+        <to uri="direct:process-document"/>
+      </aggregate>
+    </route>
+
+
+    <route>
+      <from uri="direct:process-document"/>
+
+        <log message="creating PDF report"/>
+        <process ref="pdfGenerator"/>
+        <to uri="direct:upload-to-drive"/>
+    </route>
+
+
+    <route>
+      <from uri="direct:upload-to-drive"/>
+      <process ref="prepareGoogleParameters"/>
+      <to uri="google-drive://drive-files/insert?clientId=YOUR_CLIENT_ID&amp;clientSecret=YOUR_CLIENT_SECRET&amp;accessToken=YOUR_ACCESS_TOKEN&amp;refreshToken=YOUR_REFRESH_TOKEN"/>
+    </route>
+
+
+</routes>

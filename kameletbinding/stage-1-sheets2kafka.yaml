@@ -1,0 +1,26 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: stage-1-sheets2kafka
+  namespace: demo-camelk
+spec:
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: google-sheets-source
+    properties:
+      accessToken:     "your-access-toke"
+      applicationName: "your-application-name"
+      clientId:        "your-client-id"
+      clientSecret:    "your-client-secret"
+      index: "sheet1"
+      refreshToken:    "your-refresh-token"
+      spreadsheetId:   "your-spreadsheet-id"
+      range: "B5:D7"
+      delay: 700000
+  sink:
+    ref:
+      apiVersion: kafka.strimzi.io/v1beta1
+      kind: KafkaTopic
+      name: questions
