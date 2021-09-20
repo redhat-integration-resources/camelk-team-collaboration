@@ -88,7 +88,12 @@ You can find the folder ID in your browser's address bar.
 
 ### Camel K's Kamelets
 
-Camel K comes with a catalogue of pre-defined Kamelets. However this demo defines 2 extra ones not included in the catalogue:
+Camel K comes with a catalogue of pre-defined Kamelets. However, not all of them are pre-loaded by the Operator.
+
+The Google-Sheets-Source is one of the Kamelets missing. Find its source in the link below and ensure it is loaded in your environment:
+https://github.com/apache/camel-kamelets/blob/main/library/camel-kamelets/src/main/resources/kamelets/google-sheets-source.kamelet.yaml
+
+Also, this demo defines 2 extra ones not included in the catalogue:
 
  - Non-secure Mail source (for simplicity purposes)
  - Mail format to JSON action (to simplify data manipulation)
