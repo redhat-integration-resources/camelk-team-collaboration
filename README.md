@@ -90,16 +90,14 @@ You can find the folder ID in your browser's address bar.
 
 Camel K comes with a catalogue of pre-defined Kamelets. However, not all of them are pre-loaded by the Operator.
 
-The Google-Sheets-Source is one of the Kamelets missing. Find its source in the link below and ensure it is loaded in your environment:
-https://github.com/apache/camel-kamelets/blob/main/library/camel-kamelets/src/main/resources/kamelets/google-sheets-source.kamelet.yaml
-
-Also, this demo defines 2 extra ones not included in the catalogue:
-
+This demo defines 3 extra ones not included in the catalogue:
+ - Google Sheets source (based on Camel K's one: includes 'repeatCount' parameter)
  - Non-secure Mail source (for simplicity purposes)
  - Mail format to JSON action (to simplify data manipulation)
 
 You can deploy these Kamelets in Kubernetes or OpenShift using the CLI clients (kubectl or oc):
 ```
+oc apply -f kamelet/google-sheets-source.kamelet.yaml
 oc apply -f kamelet/mail-imap-insecure-source.kamelet.yaml
 oc apply -f kamelet/mail-to-json.kamelet.yaml
 ```

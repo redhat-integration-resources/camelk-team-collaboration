@@ -18,7 +18,8 @@ spec:
       refreshToken:    "your-refresh-token"
       spreadsheetId:   "your-spreadsheet-id"
       range: "B5:D7"
-      delay: 700000
+      delay: 5000
+      repeatCount: 1
   sink:
     ref:
       apiVersion: kafka.strimzi.io/v1beta1
