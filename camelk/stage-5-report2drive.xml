@@ -41,15 +41,15 @@ kamel run stage-5-report2drive.xml java/HelperStage5.java -d camel-jackson -d ca
         </unmarshal>
 
         <setHeader name="correlation">
-          <simple>${body.get(subject).split(':')[2]}</simple>
+          <simple>${body[subject].split(':')[2]}</simple>
         </setHeader>
 
         <setProperty name="team">
-          <simple>${body.get(from).split(' ')[0]}</simple>
+          <simple>${body[from].split(' ')[0]}</simple>
         </setProperty>
 
         <setBody>
-          <simple>${body.get(message)}</simple>
+          <simple>${body[message]}</simple>
         </setBody>
 
         <log message="row=${header.correlation}"/>
