@@ -17,11 +17,11 @@
         </unmarshal>
 
         <setProperty name="row">
-        	<simple>${body.get(subject).split(':')[2]}</simple>
+        	<simple>${body[subject].split(':')[2]}</simple>
         </setProperty>
 
 	      <setBody>
-        	<simple>${body.get(message)}</simple>
+        	<simple>${body[message]}</simple>
         </setBody>
 
         <log message="row=${exchangeProperty.row}"/>
