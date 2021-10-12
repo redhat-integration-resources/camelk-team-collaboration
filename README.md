@@ -143,7 +143,7 @@ You can decide to have them all running at the same time, or deploying one at a 
 
 2. Deploy Stage 4 with:
 
-        kamel run camelk/stage-4-kafka2sheets.xml -d camel-jackson
+        kamel run --name stage4 camelk/java/HelperStage4.java camelk/stage-4-kafka2sheets.xml -d camel-jackson
 
 
 2. Deploy Stage 5 with:
