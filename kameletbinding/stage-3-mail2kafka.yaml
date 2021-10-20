@@ -1,7 +1,7 @@
 apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
-  name: stage-3-mail2kafka
+  name: stage3
   namespace: demo-camelk
 spec:
   source:

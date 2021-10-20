@@ -1,5 +1,5 @@
 # Mail server
-mailhost="http://mail-console-demo-mail.apps.cluster-9d86.9d86.sandbox1776.opentlc.com"
+mailhost="http://console-demo-mail.apps.cluster-lrqxq.lrqxq.sandbox1624.opentlc.com"
 
 # Reset Sertver (vanilla state)
 curl -X POST $mailhost"/api/service/reset" \

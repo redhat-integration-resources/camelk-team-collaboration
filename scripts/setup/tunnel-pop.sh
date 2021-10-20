@@ -1,0 +1,1 @@
+oc get pods -n demo-mail -o name | grep standalone | xargs -I {} oc port-forward -n demo-mail {} 3110

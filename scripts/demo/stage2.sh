@@ -1,0 +1,1 @@
+kamel run --name stage2 camelk/stage-2-kafka2mail.xml -d camel-jackson

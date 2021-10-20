@@ -1,7 +1,7 @@
 apiVersion: camel.apache.org/v1alpha1
 kind: KameletBinding
 metadata:
-  name: stage-1-sheets2kafka
+  name: stage1
   namespace: demo-camelk
 spec:
   source:

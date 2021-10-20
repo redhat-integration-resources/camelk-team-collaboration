@@ -44,6 +44,12 @@ A handy resource for generating a long-lived refreshToken is the OAuth playgroun
 
 ### GreenMail
 
+Create a namespace where the mail server will be deployed:
+
+```
+oc create project demo-mail
+```
+
 GreenMail supports both secure and non-secure SMTP, POP3 and IMAP. 
 You can deploy an image in OCP using their docker image:
 
@@ -55,16 +61,18 @@ You can connect your local email client to GreenMail by opening tunnels using th
 
  - POP3 port:
    ```
-   oc get pods -n demo-mail -o name | grep standalone | xargs -I {} oc port-forward -n demo-mail {} 3110
+   ./scripts/setup/tunnel-pop.sh
    ```
  - SMTP port:
    ```
-   oc get pods -n demo-mail -o name | grep standalone | xargs -I {} oc port-forward -n demo-mail {} 3025
+   ./scripts/setup/tunnel-smtp.sh
    ```
 
 The following command line will run a script file that will create all the demo accounts for you by interacting with GreenMail's API:
 
-    ./setup/mail.sh
+    ./scripts/setup/mail.sh
+
+> **Note: ** ensure the URL in the script is configured and pointing to your deployed mail server
 
 
 ### Google Sheet
@@ -85,6 +93,15 @@ Obtain the target folder ID where Camel K will upload the PDF report generated f
 
 You can find the folder ID in your browser's address bar.
 
+### Camel K platform
+
+Create a namespace where Camel K will be installed:
+
+```
+oc create project demo-camelk
+```
+
+Install the Camel K operator for this namespace (1.4.1 at the time of writing), and create an Integration Platform using the default values.
 
 ### Camel K's Kamelets
 
@@ -95,20 +112,21 @@ This demo defines 3 extra ones not included in the catalogue:
  - Non-secure Mail source (for simplicity purposes)
  - Mail format to JSON action (to simplify data manipulation)
 
-You can deploy these Kamelets in Kubernetes or OpenShift using the CLI clients (kubectl or oc):
+You can deploy these Kamelets in Kubernetes or OpenShift using the CLI clients (kubectl or oc). The repo includes a script file you can run:
 ```
-oc apply -f kamelet/google-sheets-source.kamelet.yaml
-oc apply -f kamelet/mail-imap-insecure-source.kamelet.yaml
-oc apply -f kamelet/mail-to-json.kamelet.yaml
+./scripts/setup/kamelets.sh
 ```
+
+### AMQ Streams platform
+
+In the same Camel K namespace, install the AMQ Streams operator (1.7.x). Then create a Kafka instance using the default values
 
 ### Kafka topics
 
-The demo streams questions and answers in and out of Kafka using 2 topics. Use the following CLI commands to create have them created:
+The demo will stream questions and answers in and out of Kafka using 2 topics. The repo includes a script that includes the creation of these Kafka topics. Run it with:
 
 ```
-oc apply -f kafka/questions.yaml
-oc apply -f kafka/answers.yaml
+./scripts/demo/reset.sh
 ```
 
 
@@ -116,7 +134,7 @@ oc apply -f kafka/answers.yaml
 
 ## Execution
 
-> **Note**: The demo is implemented with simplistic logic. The demo is configured (hacked) to prevent duplicates using a long polling frequency value against the Google Sheets document. You're invited to complete the demo's logic to allow frequent polls and applying data caches and filters to make the demo more realistic. 
+> **Note**: The demo is implemented with simplistic logic. The demo is configured (hacked) to prevent duplicates using the parameter `repeatCount=1`. You're invited to complete the demo's logic to allow multiple polls and applying data caches and filters to make the demo more realistic. 
 
 You can watch how the demo is executed in this video clip:
 
@@ -130,22 +148,30 @@ The demo is composed of 5 Camel K elements
 You can decide to have them all running at the same time, or deploying one at a time to allow your audience to better follow and understand the demo. 
 
 1. Deploy Stage 1 with:
-
-        oc apply -f kameletbinding/stage-1-sheets2kafka.yaml
-
+   ```
+   ./scripts/demo/stage1.sh
+   ```
 2. Deploy Stage 2 with:
-
-        kamel run camelk/stage-2-kafka2mail.xml -d camel-jackson
+   ```
+   ./scripts/demo/stage2.sh
+   ```
 
 2. Deploy Stage 3 with:
-
-        oc apply -f kameletbinding/stage-3-mail2kafka.yaml
+   ```
+   ./scripts/demo/stage3.sh
+   ```
 
 2. Deploy Stage 4 with:
-
-        kamel run --name stage4 camelk/java/HelperStage4.java camelk/stage-4-kafka2sheets.xml -d camel-jackson
-
+   ```
+   ./scripts/demo/stage4.sh
+   ```
 
 2. Deploy Stage 5 with:
+   ```
+   ./scripts/demo/stage5.sh
+   ```
 
-        kamel run --name stage5 camelk/java/HelperStage5.java camelk/stage-5-report2drive.xml -d camel-jackson -d camel-pdf
+You can reset the demo and start from zero by executing the following script:
+```
+./scripts/demo/reset.sh
+```
