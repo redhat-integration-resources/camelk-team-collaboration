@@ -61,6 +61,10 @@ You can deploy an image in OCP using their docker image:
  - https://greenmail-mail-test.github.io/greenmail/#deploy_docker_standalone
 
 Ensure there is a route to its web interface in 8080:
+ - From *OpenShift*'s option: \
+      *Deploy Image*
+ - Select the image: \
+      `greenmail/standalone`
  - In the section: \
       *Show advanced Routing options*
  - Select: \
