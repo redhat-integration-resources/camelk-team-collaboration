@@ -19,9 +19,10 @@ This demo Camel K code requires the following dependencies:
  - A Mail server (demo-testing server)
 
 This demo has been tested using:
- - Red Hat OpenShift 4.7
- - Red Hat Camel K 1.4 GA
- - Red Hat's Camel K GA, Red Hat's AMQ-Streams 1.7
+ - Red Hat OpenShift 4.9
+ - Red Hat Camel K 1.6.4 GA
+ - Red Hat Camel K client 1.6.0 GA
+ - Red Hat's AMQ-Streams 1.8.4
  - Image of Greenmail in OpenShift \
     https://greenmail-mail-test.github.io/greenmail/#
 
@@ -33,6 +34,10 @@ This demo has been tested using:
 
 You need to setup API access to Google Sheets and Drive. You can start from here:
  - https://developers.google.com/sheets/api/guides/authorizing
+
+Ensure you enable permissions to:
+ - See, edit, create, and delete only the specific Google Drive files you use with this app. Learn more
+ - See, edit, create, and delete all your Google Sheets spreadsheets. Learn more
 
 Credentials comprise of a
  - clientId
@@ -47,7 +52,7 @@ A handy resource for generating a long-lived refreshToken is the OAuth playgroun
 Create a namespace where the mail server will be deployed:
 
 ```
-oc create project demo-mail
+oc new-project demo-mail
 ```
 
 GreenMail supports both secure and non-secure SMTP, POP3 and IMAP. 
@@ -56,6 +61,14 @@ You can deploy an image in OCP using their docker image:
  - https://greenmail-mail-test.github.io/greenmail/#deploy_docker_standalone
 
 Ensure there is a route to its web interface in 8080
+
+> **Warning**: When deploying... it might fail to start due to timeout, logging the error:
+> ```
+> Exception in thread "main" java.lang.IllegalStateException: Could not start mail server smtps:0.0.0.0:3465, try to set server startup timeout > 2000 via ServerSetup.setServerStartupTimeout(timeoutInMs) or -Dgreenmail.startup.timeout 
+> ```
+> To resolve the problem:
+> 1) try killing the pod until it starts successfully
+> 2) or configure the timeout parameter as indicated by the error message
 
 You can connect your local email client to GreenMail by opening tunnels using the following commands: 
 
@@ -98,7 +111,7 @@ You can find the folder ID in your browser's address bar.
 Create a namespace where Camel K will be installed:
 
 ```
-oc create project demo-camelk
+oc new-project demo-camelk
 ```
 
 Install the Camel K operator for this namespace (1.4.1 at the time of writing), and create an Integration Platform using the default values.
@@ -155,6 +168,10 @@ You can decide to have them all running at the same time, or deploying one at a 
    ```
    ./scripts/demo/stage2.sh
    ```
+   > **Warning:** on your 1st run, your email client might not fetch the emails. Trigger the action 'Purge all mails' from the GreenMail Web console and try again. 
+   
+   <br>
+
 
 2. Deploy Stage 3 with:
    ```

@@ -41,7 +41,7 @@ kamel run stage-5-report2drive.xml java/HelperStage5.java -d camel-jackson -d ca
         </unmarshal>
 
         <setHeader name="correlation">
-          <simple>${body[subject].split(':')[2]}</simple>
+          <simple>${body[subject].split(':')[2].trim}</simple>
         </setHeader>
 
         <setProperty name="team">
