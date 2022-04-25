@@ -35,17 +35,21 @@ This demo has been tested using:
 You need to setup API access to Google Sheets and Drive. You can start from here:
  - https://developers.google.com/sheets/api/guides/authorizing
 
-Ensure you enable permissions to:
- - See, edit, create, and delete only the specific Google Drive files you use with this app. Learn more
- - See, edit, create, and delete all your Google Sheets spreadsheets. Learn more
-
 Credentials comprise of a
  - clientId
  - clientSecret
  - refreshToken.
  
 A handy resource for generating a long-lived refreshToken is the OAuth playground:
-  - https://developers.google.com/oauthplayground
+  - https://developers.google.com/oauthplayground \
+    Authorise all APIs from the group:
+    - Google Sheets API v4
+
+<br>
+
+ - Ensure you enable permissions to:
+   - See, edit, create, and delete only the specific Google Drive files you use with this app.
+   - See, edit, create, and delete all your Google Sheets spreadsheets.
 
 ### GreenMail
 
