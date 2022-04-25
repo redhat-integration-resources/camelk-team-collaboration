@@ -60,7 +60,13 @@ You can deploy an image in OCP using their docker image:
 
  - https://greenmail-mail-test.github.io/greenmail/#deploy_docker_standalone
 
-Ensure there is a route to its web interface in 8080
+Ensure there is a route to its web interface in 8080:
+ - In the section: \
+      *Show advanced Routing options*
+ - Select: \
+      `Target Port` \
+      `8080`
+
 
 > **Warning**: When deploying... it might fail to start due to timeout, logging the error:
 > ```
