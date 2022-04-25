@@ -20,7 +20,7 @@ This demo Camel K code requires the following dependencies:
 
 This demo has been tested using:
  - Red Hat OpenShift 4.9
- - Red Hat Camel K 1.6.4 GA
+ - Red Hat Camel K 1.6.5 GA
  - Red Hat Camel K client 1.6.0 GA
  - Red Hat's AMQ-Streams 1.8.4
  - Image of Greenmail in OpenShift \
@@ -124,7 +124,9 @@ Create a namespace where Camel K will be installed:
 oc new-project demo-camelk
 ```
 
-Install the Camel K operator for this namespace (1.4.1 at the time of writing), and create an Integration Platform using the default values.
+Install the Camel K operator for this namespace and create an Integration Platform using the default values.
+
+> **Warning:** it's recommended to use the version referenced at the top of this guide to ensure Camel K and AMQ Streams are compatible.
 
 ### Camel K's Kamelets
 
@@ -142,7 +144,11 @@ You can deploy these Kamelets in Kubernetes or OpenShift using the CLI clients (
 
 ### AMQ Streams platform
 
-In the same Camel K namespace, install the AMQ Streams operator (1.7.x). Then create a Kafka instance using the default values
+In the same Camel K namespace, install the AMQ Streams operator. 
+
+> **Warning:** it's recommended to use the version referenced at the top of this guide to ensure Camel K and AMQ Streams are compatible.
+
+Then create a Kafka instance using the default values
 
 ### Kafka topics
 
