@@ -168,10 +168,7 @@ You can decide to have them all running at the same time, or deploying one at a 
    ```
    ./scripts/demo/stage2.sh
    ```
-   > **Warning:** on your 1st run, your email client might not fetch the emails. Trigger the action 'Purge all mails' from the GreenMail Web console and try again. 
-   
-   <br>
-
+   > **Warning:** on your 1st run, your email client might not fetch the emails. Trigger the action 'Purge all mails' from the GreenMail Web console and try again.   
 
 2. Deploy Stage 3 with:
    ```
