@@ -102,7 +102,7 @@ kamel run stage-5-report2drive.xml java/HelperStage5.java -d camel-jackson -d ca
     <route>
       <from uri="direct:upload-to-drive"/>
       <process ref="prepareGoogleParameters"/>
-      <to uri="google-drive://drive-files/insert?clientId=YOUR_CLIENT_ID&amp;clientSecret=YOUR_CLIENT_SECRET&amp;accessToken=YOUR_ACCESS_TOKEN&amp;refreshToken=YOUR_REFRESH_TOKEN"/>
+      <to uri="google-drive://drive-files/insert?clientId={{clientId}}&amp;clientSecret={{clientSecret}}&amp;accessToken={{accessToken}}&amp;refreshToken={{refreshToken}}"/>
     </route>
 
 

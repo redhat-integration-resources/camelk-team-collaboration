@@ -4,22 +4,28 @@ metadata:
   name: stage1
   namespace: demo-camelk
 spec:
+  integration:
+    configuration:
+     - type: "secret"
+       value: "stage1"
+
+
   source:
     ref:
       kind: Kamelet
       apiVersion: camel.apache.org/v1alpha1
       name: google-sheets-source
     properties:
-      accessToken:     "your-access-toke"
       applicationName: "your-application-name"
-      clientId:        "your-client-id"
-      clientSecret:    "your-client-secret"
-      index: "sheet1"
+      accessToken:     "your-access-token"
       refreshToken:    "your-refresh-token"
       spreadsheetId:   "your-spreadsheet-id"
+      index: "sheet1"
       range: "B5:D7"
       delay: 5000
       repeatCount: 1
+
+
   sink:
     ref:
       apiVersion: kafka.strimzi.io/v1beta1

@@ -5,6 +5,7 @@ import org.apache.camel.AggregationStrategy;
 import org.apache.camel.BindToRegistry;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.PropertyInject;
 import org.apache.camel.builder.RouteBuilder;
 
 //Google API
@@ -33,7 +34,8 @@ public class HelperStage5 extends RouteBuilder {
     //Folder destination in Google Drive
     //The folder ID is found in the browser's address bar. It looks like this:
     //https://drive.google.com/drive/u/1/folders/--here-the-folder-id-in-alphanumeric--
-    private static final String FOLDER_ID = "enter-here-your-folder-id";
+    @PropertyInject("folder-id")
+    private String folderId;
 
     //dummy
     @Override
@@ -49,7 +51,7 @@ public class HelperStage5 extends RouteBuilder {
             //prepare target folder information
             ArrayList<ParentReference> parents = new ArrayList<ParentReference>();
             ParentReference folder = new ParentReference();
-            folder.setId(FOLDER_ID);
+            folder.setId(folderId);
             parents.add(folder);
 
             //prepare file information

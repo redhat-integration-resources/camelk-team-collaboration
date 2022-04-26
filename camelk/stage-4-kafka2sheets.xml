@@ -40,7 +40,7 @@
     <route>
       <from uri="direct:send-to-sheets"/>
       <process ref="prepareGoogleParameters"/>
-      <to uri="google-sheets://data/update?clientId=YOUR_CLIENT_ID&amp;clientSecret=YOUR_SECRET&amp;accessToken=YOUR_ACCESS_TOKEN&amp;refreshToken=YOUR_REFRESH_TOKEN&amp;spreadsheetId=YOUR_SPREADSHEET_ID"/>
+      <to uri="google-sheets://data/update?clientId={{clientId}}&amp;clientSecret={{clientSecret}}&amp;accessToken={{accessToken}}&amp;refreshToken={{refreshToken}}&amp;spreadsheetId={{spreadsheetId}}"/>
     </route>
 
 

@@ -99,7 +99,7 @@ The following command line will run a script file that will create all the demo 
 
     ./scripts/setup/mail.sh
 
-> **Note: ** ensure the URL in the script is configured and pointing to your deployed mail server
+> **Note:** ensure the URL in the script is configured and pointing to your deployed mail server
 
 
 ### Google Sheet
@@ -131,6 +131,20 @@ oc new-project demo-camelk
 Install the Camel K operator for this namespace and create an Integration Platform using the default values.
 
 > **Warning:** it's recommended to use the version referenced at the top of this guide to ensure Camel K and AMQ Streams are compatible.
+
+## Configure parameters:
+
+Configure your API credentials and tokens in:
+
+ - camelk/cfg/secret.properties
+ - camelk/cfg/svc.properties
+
+Configure your Google API credentials in:
+
+ - scripts/setup/secrets.sh
+
+Execute the script to push the secret to the environment
+
 
 ### Camel K's Kamelets
 
