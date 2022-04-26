@@ -143,8 +143,10 @@ Configure your Google API credentials in:
 
  - scripts/setup/secrets.sh
 
-Execute the script to push the secret to the environment
-
+Execute the script to push the secret to the environment:
+```
+./scripts/setup/secrets.sh
+```
 
 ### Camel K's Kamelets
 
@@ -194,7 +196,7 @@ The demo is composed of 5 Camel K elements
 
 You can decide to have them all running at the same time, or deploying one at a time to allow your audience to better follow and understand the demo. 
 
-1. Deploy Stage 1 with:
+1. Configure and deploy Stage 1 with:
    ```
    ./scripts/demo/stage1.sh
    ```

@@ -35,7 +35,7 @@ public class HelperStage5 extends RouteBuilder {
     //The folder ID is found in the browser's address bar. It looks like this:
     //https://drive.google.com/drive/u/1/folders/--here-the-folder-id-in-alphanumeric--
     @PropertyInject("folder-id")
-    private String folderId;
+    private static String folderId;
 
     //dummy
     @Override
